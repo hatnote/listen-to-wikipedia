@@ -1,0 +1,208 @@
+<html>
+<head>
+    <title>Hatnote Listen to Wikipedia</title>
+    <meta name="title" content="Hatnote Listen to Wikipedia">
+    <meta name="description" content="Listen to recent changes on Wikipedia">
+    <meta name="keywords" content="hatnote, listen, recent changes, sound, music, wikipedia, edits, visualization">
+    <meta name="author" content="Stephen LaPorte and Mahmoud Hashemi">
+    <script src='js/jquery-1.9.1.min.js'></script>
+    <script src='js/d3.min.js'></script>
+    <script src='js/howler.min.js'></script>
+    <script src="js/reconnecting-websocket.min.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <script>
+
+    /* Settings
+       ======== */
+
+    var scale_factor = 5,
+        note_overlap = 15,
+        note_timeout = 300,
+        current_notes = 0,
+        max_life = 60000,
+        DEFAULT_LANG = 'en';
+
+    /* Colors
+       ====== */
+
+    var body_background_color = '#f8f8f8',
+        body_text_color = '#000',
+        svg_background_color = '#1c2733',
+        svg_text_color = '#fff',
+        newuser_box_color = 'rgb(41, 128, 185)',
+        bot_color = 'rgb(155, 89, 182)',
+        anon_color = 'rgb(46, 204, 113)',
+        edit_color = '#fff';
+
+    /* Languages
+       ========= */
+
+    var langs = {
+        'en': ['English', 'ws://wikimon.hatnote.com:9000'],
+        'de': ['German', 'ws://wikimon.hatnote.com:9010'],
+        'ru': ['Russian', 'ws://wikimon.hatnote.com:9020'],
+        'ja': ['Japanese', 'ws://wikimon.hatnote.com:9030'],
+        'es': ['Spanish', 'ws://wikimon.hatnote.com:9040'],
+        'fr': ['French', 'ws://wikimon.hatnote.com:9050'],
+        'id': ['Indonesian', 'ws://wikimon.hatnote.com:9100']
+    }
+
+    /* Computers-only
+       ============== */
+
+    var w = window,
+        d = document,
+        e = d.documentElement,
+        g = d.getElementsByTagName('#area svg')[0],
+        width = w.innerWidth || e.clientWidth || g.clientWidth,
+        height = (w.innerHeight - $('#header').height()) || (e.clientHeight - $('#header').height())|| (g.clientHeight - $('#header').height());
+
+    var se = {},
+        ce = {},
+        epm = 0,
+        edit_times = [],
+        SOCKETS = {},
+        swells = [],
+        s_titles = true,
+        s_welcome = true,
+        s_langs = [] // TODO: set up lang boxes.
+
+    $(function(){
+
+    w = window,
+    d = document,
+    e = d.documentElement,
+    g = d.getElementsByTagName('#area svg')[0],
+    width = w.innerWidth || e.clientWidth || g.clientWidth,
+    height = (w.innerHeight - $('#header').height()) || (e.clientHeight - $('#header').height())|| (g.clientHeight - $('#header').height());
+
+    $('body').css('background-color', body_background_color)
+    $('body').css('color', body_text_color)
+    $('svg').css('background-color', svg_background_color)
+    $('svg text').css('color', svg_text_color)
+    // :(
+    $('head').append('<style type="text/css">.newuser-label {fill:' + svg_text_color +
+                     ';} .bot {fill:' + bot_color +
+                     ';} .anon {fill:' + anon_color +
+                     ';} .bot </style>');
+
+    var svg = d3.select("#area").append("svg")
+        .attr({width: width, height: height})
+        .style('background-color', '#1c2733');
+
+    var update_window = function() {
+        width = w.innerWidth || e.clientWidth || g.clientWidth;
+        height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
+
+        svg.attr("width", width).attr("height", height);
+        if (epm_text) {
+            epm_container.attr('transform', 'translate(0, ' + (height - 25) + ')')
+        }
+        /*rate_bg.attr("width", width).attr("height", height);*/
+    }
+
+    window.onresize = update_window;
+
+    $('#welcome').click(make_click_handler($('#welcome'), 'nowelcomes')
+    );
+    $('#titles').click(
+        make_click_handler($('#titles'), 'notitles')
+    );
+    $('#about-link').click(function(){
+        // because we use window.location to set languages.
+        $('html, body').animate({scrollTop:$(document).height()}, 'slow');
+        return false;
+      });
+
+    // TODO: Volume slider
+
+    for (var i = 1; i <= 22; i++) {
+        if (i > 9) {
+            fn = 'c0' + i;
+        } else {
+            fn = 'c00' + i;
+        }
+        se[i] = new Howl({
+            urls : ['sounds/celesta/' + fn + '.mp3'],
+            volume : 0.2
+        })
+        ce[i] = new Howl({
+            urls : ['sounds/clav/' + fn + '.mp3'],
+            volume : 0.2
+        })
+    }
+    for (var i = 1; i <= 3; i++) {
+        swells.push(new Howl({
+            urls : ['sounds/swells/swell' + i + '.mp3'],
+            volume : 1
+        }))
+    }
+
+    /*
+    function testuser() {
+        data = {user: 'Slaporte'}
+        newuser_action(data, 'en', svg)
+    }
+
+    testuser()
+    */
+
+    for (lang in langs) {
+        if (langs.hasOwnProperty(lang)) {
+            $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + langs[lang][0] + '">' + langs[lang][0] + ' Wikipedia <span class="conStatus" id="' + lang + '-status"></span></label></p>')
+            SOCKETS[lang] = new wikipediaSocket.init(langs[lang][1], lang, svg);
+            var box = $('#' + lang + '-enable');
+            if (box.is(':checked')) {
+                enable(lang)
+            }
+            box.click(make_click_handler(box, lang));
+        }
+    }
+
+    enabled_langs = return_lang_settings();
+
+    if (!enabled_langs.length) {
+        enabled_langs.push(DEFAULT_LANG)
+    }
+    for (var i = 0; i < enabled_langs.length + 1; i ++) {
+        var lang = enabled_langs[i];
+        $('#' + lang + '-enable').prop('checked', true);
+        if (SOCKETS[lang] && (!SOCKETS[lang].connection ||
+                              SOCKETS[lang].connection.readyState == 3)) {
+            SOCKETS[lang].connect();
+        }
+    }
+
+    })
+    </script>
+<link href='css/style.css' rel='stylesheet' type='text/css'>
+</head>
+<body>
+    <div id='header'>
+        <span class="about-link"><a id="about-link" href="">about</a> & <a href="#">blog</a></span>
+        <h1>Listen to Wikipedia</h1>
+    </div>
+    <div id='area'></div>
+    <div id='content'>
+        <div class='bg'>
+            <div id='rc-log-c'>
+                <h3>Recent changes</h3>
+                <ul id='rc-log'>
+                </ul>
+            </div>
+        </div>
+        <h2>Settings</h2>
+        <p><input type="checkbox" name="welcome" id="welcome">
+        <label for='welcome'>Hide new user announcements</label></p>
+        <p><input type="checkbox" name="titles" id="titles">
+        <label for='titles'>Hide article titles</label></p>
+        <h2>Languages</h2>
+        <div id='lang-boxes'></div>
+        <h2>About</h2>
+        <p><a href='http://blog.hatnote.com'>Read more</a> about this project.</p>
+        <p>Listen to Wikipedia's recent changes feed. The sounds indicate addition or subtraction from a Wikipedia articles, and the pitch changes according to the size of the edit. <span style='border-bottom:1px solid rgb(46, 204, 113)'>Green circles</span> show edits from <a href='http://en.wikipedia.org/wiki/Wikipedia:User_access_levels#Unregistered_users'>unregistered contributors</a>, and <span style='border-bottom:1px solid rgb(155, 89, 182)'>purple circles</span> mark edits performed by <a href='http://en.wikipedia.org/wiki/Wikipedia:Bots'>automated bots</a>. You may see announcements for new users as they join the site -- leave them a note on their talk page, and welcome them to our encyclopedia!</p>
+        <p>This project is built using <a href='d3js.org'>D3</a> and <a href='https://github.com/goldfire/howler.js'>HowlerJS</a>. It is based on <a href='http://www.listentobitcoin.com/'>Listen to Bitcoin</a> by <a href='https://github.com/MaxLaumeister'>Maximillian Laumeister</a>. Our source is <a href='https://github.com/hatnote/listentowiki'>available on GitHub</a>, and you can read more about this project.</p>
+        <p>Built by <a href='http://github.com/slaporte'>Stephen LaPorte</a> and <a href='http://github.com/mahmoud'>Mahmoud Hashemi</a>.
+    </div>
+</body>
+</html>

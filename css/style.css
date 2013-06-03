@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    font: 1em sans-serif;
+}
+circle {
+    fill-opacity: .5;
+}
+h1 {
+    padding: 0.2em 0 0.2em 0.5em;
+    margin: 0;
+    color: #1c2733;
+}
+a {
+    color: #306596;
+}
+a:hover {
+    color: #cc4731;
+}
+#area {
+    overflow: hidden;
+}
+#header {
+    background: #f8f8f8;
+    margin: 0;
+}
+#rc-log-c {
+    margin: 0.5em;
+    line-height: 1.5em;
+    font-size: .8em;
+    border: 1px solid #2f6fab;
+}
+#rc-log-c h3 {
+    padding: .5em;
+    margin: 0;
+    background: #fff;
+    border-bottom: 1px solid #d8e6ec;
+    font-size: 2em;
+}
+#rc-log {
+    list-style-type: none;
+}
+#content {
+    margin: 1em auto 4em auto;
+    max-width: 960px;
+    position: relative;
+}
+.conStatus {
+    color: #bdc3c7;
+}
+.bg {
+    padding: 3px;
+    background: #fff;
+    border-radius: 3px;
+    margin: 1em;
+}
+.article-label {
+    font: 1em sans-serif;
+}
+.newuser-label {
+    font: 1em sans-serif;
+    opacity: 1;
+}
+.about-link {
+    float: right;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.5em;
+    padding-right: 2em;
+    padding-top: .5em;
+}
+.lang {
+    color: #bdc3c7;
+    padding: auto .5em;
+}
+.loc {
+    border-bottom: 1px dashed #ccc;
+}
