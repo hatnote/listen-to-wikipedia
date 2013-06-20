@@ -57,12 +57,13 @@
         width = w.innerWidth || e.clientWidth || g.clientWidth,
         height = (w.innerHeight - $('#header').height()) || (e.clientHeight - $('#header').height())|| (g.clientHeight - $('#header').height());
 
-    var se = {},
-        ce = {},
+    var celesta = [],
+        clav = [],
         epm = 0,
         edit_times = [],
         SOCKETS = {},
         swells = [],
+        all_loaded = false,
         s_titles = true,
         s_welcome = true,
         s_langs = [] // TODO: set up lang boxes.
@@ -85,6 +86,7 @@
                      ';} .bot {fill:' + bot_color +
                      ';} .anon {fill:' + anon_color +
                      ';} .bot </style>');
+    $('body').append('<div id="loading"><p>Loading sound files ...</p></div>')
 
     var svg = d3.select("#area").append("svg")
         .attr({width: width, height: height})
@@ -115,6 +117,17 @@
       });
 
     // TODO: Volume slider
+    var sound_loaded = 0
+    var sound_load = function() {
+        sound_loaded += 1
+        if (sound_loaded == celesta.length + clav.length + swells.length) {
+            all_loaded = true
+            $('#loading').remove()
+            console.log('Loading complete')
+        } else {
+            console.log('Loading : ' + sound_loaded + ' files out of ' + (celesta.length + clav.length + swells.length))
+        }
+    }
 
     for (var i = 1; i <= 22; i++) {
         if (i > 9) {
@@ -122,19 +135,23 @@
         } else {
             fn = 'c00' + i;
         }
-        se[i] = new Howl({
-            urls : ['sounds/celesta/' + fn + '.mp3'],
-            volume : 0.2
-        })
-        ce[i] = new Howl({
+        celesta.push(new Howl({
+            urls : ['sounds/celesta/' + fn + '.mp3',
+                    'sounds/celesta/' + fn + '.ogg'],
+            volume : 0.2,
+            onload : sound_load
+        }))
+        clav.push(new Howl({
             urls : ['sounds/clav/' + fn + '.mp3'],
-            volume : 0.2
-        })
+            volume : 0.2,
+            onload : sound_load
+        }))
     }
     for (var i = 1; i <= 3; i++) {
         swells.push(new Howl({
             urls : ['sounds/swells/swell' + i + '.mp3'],
-            volume : 1
+            volume : 1,
+            onload : sound_load
         }))
     }
 

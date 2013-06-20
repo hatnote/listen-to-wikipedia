@@ -145,6 +145,10 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
             connection.onmessage = function(resp) {
                 var data = JSON.parse(resp.data);
 
+                if (!all_loaded) {
+                    return;
+                }
+
                 if (data.ns == 'Main') {
                     if (!isNaN(data.change_size)) {
                         var rc_str = '"<a href="' + data.url +
@@ -199,17 +203,17 @@ function play_sound(size, type, volume) {
     var max_pitch = 100.0;
     var log_used = 1.0715307808111486871978099;
     var pitch = 100 - Math.min(max_pitch, Math.log(size + log_used) / Math.log(log_used));
-    var index = Math.floor(pitch / 100.0 * Object.keys(se).length);
+    var index = Math.floor(pitch / 100.0 * Object.keys(celesta).length);
     var fuzz = Math.floor(Math.random() * 4) - 2;
     index += fuzz;
-    index = Math.min(Object.keys(se).length - 1, index);
+    index = Math.min(Object.keys(celesta).length - 1, index);
     index = Math.max(1, index);
     if (current_notes < note_overlap) {
         current_notes++;
         if (type == 'sub') {
-            ce[index].play();
+            celesta[index].play();
         } else {
-            se[index].play();
+            clav[index].play();
         }
         setTimeout(function() {
             current_notes--;
