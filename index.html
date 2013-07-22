@@ -32,7 +32,8 @@
         newuser_box_color = 'rgb(41, 128, 185)',
         bot_color = 'rgb(155, 89, 182)',
         anon_color = 'rgb(46, 204, 113)',
-        edit_color = '#fff';
+        edit_color = '#fff',
+        sound_totals = 47;
 
     /* Languages
        ========= */
@@ -70,125 +71,124 @@
 
     $(function(){
 
-    w = window,
-    d = document,
-    e = d.documentElement,
-    g = d.getElementsByTagName('#area svg')[0],
-    width = w.innerWidth || e.clientWidth || g.clientWidth,
-    height = (w.innerHeight - $('#header').height()) || (e.clientHeight - $('#header').height())|| (g.clientHeight - $('#header').height());
 
-    $('body').css('background-color', body_background_color)
-    $('body').css('color', body_text_color)
-    $('svg').css('background-color', svg_background_color)
-    $('svg text').css('color', svg_text_color)
-    // :(
-    $('head').append('<style type="text/css">.newuser-label {fill:' + svg_text_color +
-                     ';} .bot {fill:' + bot_color +
-                     ';} .anon {fill:' + anon_color +
-                     ';} .bot </style>');
-    $('body').append('<div id="loading"><p>Loading sound files ...</p></div>')
+        $('body').css('background-color', body_background_color)
+        $('body').css('color', body_text_color)
+        $('svg').css('background-color', svg_background_color)
+        $('svg text').css('color', svg_text_color)
+        // :(
+        $('head').append('<style type="text/css">.newuser-label {fill:' + svg_text_color +
+                         ';} .bot {fill:' + bot_color +
+                         ';} .anon {fill:' + anon_color +
+                         ';} .bot </style>');
+        $('body').append('<div id="loading"><p>Loading sound files ...</p></div>')
 
-    var svg = d3.select("#area").append("svg")
-        .attr({width: width, height: height})
-        .style('background-color', '#1c2733');
+        var svg = d3.select("#area").append("svg")
+            .attr({width: width, height: height})
+            .style('background-color', '#1c2733');
 
-    var update_window = function() {
-        width = w.innerWidth || e.clientWidth || g.clientWidth;
-        height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
+        var update_window = function() {
+            width = w.innerWidth || e.clientWidth || g.clientWidth;
+            height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
 
-        svg.attr("width", width).attr("height", height);
-        if (epm_text) {
-            epm_container.attr('transform', 'translate(0, ' + (height - 25) + ')')
-        }
-        /*rate_bg.attr("width", width).attr("height", height);*/
-    }
-
-    window.onresize = update_window;
-
-    $('#welcome').click(make_click_handler($('#welcome'), 'nowelcomes')
-    );
-    $('#titles').click(
-        make_click_handler($('#titles'), 'notitles')
-    );
-    $('#about-link').click(function(){
-        // because we use window.location to set languages.
-        $('html, body').animate({scrollTop:$(document).height()}, 'slow');
-        return false;
-      });
-
-    // TODO: Volume slider
-    var sound_loaded = 0
-    var sound_load = function() {
-        sound_loaded += 1
-        if (sound_loaded == celesta.length + clav.length + swells.length) {
-            all_loaded = true
-            $('#loading').remove()
-            console.log('Loading complete')
-        } else {
-            console.log('Loading : ' + sound_loaded + ' files out of ' + (celesta.length + clav.length + swells.length))
-        }
-    }
-
-    for (var i = 1; i <= 22; i++) {
-        if (i > 9) {
-            fn = 'c0' + i;
-        } else {
-            fn = 'c00' + i;
-        }
-        celesta.push(new Howl({
-            urls : ['sounds/celesta/' + fn + '.mp3',
-                    'sounds/celesta/' + fn + '.ogg'],
-            volume : 0.2,
-            onload : sound_load
-        }))
-        clav.push(new Howl({
-            urls : ['sounds/clav/' + fn + '.mp3'],
-            volume : 0.2,
-            onload : sound_load
-        }))
-    }
-    for (var i = 1; i <= 3; i++) {
-        swells.push(new Howl({
-            urls : ['sounds/swells/swell' + i + '.mp3'],
-            volume : 1,
-            onload : sound_load
-        }))
-    }
-
-    /*
-    function testuser() {
-        data = {user: 'Slaporte'}
-        newuser_action(data, 'en', svg)
-    }
-
-    testuser()
-    */
-
-    for (lang in langs) {
-        if (langs.hasOwnProperty(lang)) {
-            $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + langs[lang][0] + '">' + langs[lang][0] + ' Wikipedia <span class="conStatus" id="' + lang + '-status"></span></label></p>')
-            SOCKETS[lang] = new wikipediaSocket.init(langs[lang][1], lang, svg);
-            var box = $('#' + lang + '-enable');
-            if (box.is(':checked')) {
-                enable(lang)
+            svg.attr("width", width).attr("height", height);
+            if (epm_text) {
+                epm_container.attr('transform', 'translate(0, ' + (height - 25) + ')')
             }
-            box.click(make_click_handler(box, lang));
+            /*rate_bg.attr("width", width).attr("height", height);*/
         }
-    }
 
-    enabled_langs = return_lang_settings();
+        window.onresize = update_window;
 
-    if (!enabled_langs.length) {
-        enabled_langs.push(DEFAULT_LANG)
-    }
-    for (var i = 0; i < enabled_langs.length + 1; i ++) {
-        var lang = enabled_langs[i];
-        $('#' + lang + '-enable').prop('checked', true);
-        if (SOCKETS[lang] && (!SOCKETS[lang].connection ||
-                              SOCKETS[lang].connection.readyState == 3)) {
-            SOCKETS[lang].connect();
+        $('#welcome').click(make_click_handler($('#welcome'), 'nowelcomes')
+        );
+        $('#titles').click(
+            make_click_handler($('#titles'), 'notitles')
+        );
+        $('#about-link').click(function(){
+            // because we use window.location to set languages.
+            $('html, body').animate({scrollTop:$(document).height()}, 'slow');
+            return false;
+        });
+
+        // TODO: Volume slider?
+        var loaded_sounds = 0
+        var sound_load = function(r) {
+            loaded_sounds += 1
+            if (loaded_sounds == sound_totals) {
+                all_loaded = true
+                $('#loading').remove()
+                console.log('Loading complete')
+            } else {
+                console.log('Loading : ' + loaded_sounds + ' files out of ' + sound_totals)
+            }
         }
-    }
+
+        // load celesta and clav sounds
+        for (var i = 1; i <= 22; i++) {
+            if (i > 9) {
+                fn = 'c0' + i;
+            } else {
+                fn = 'c00' + i;
+            }
+            celesta.push(new Howl({
+                urls : ['sounds/celesta/' + fn + '.ogg',
+                        'sounds/celesta/' + fn + '.mp3'],
+                volume : 0.2,
+                onload : sound_load(),
+            }))
+            clav.push(new Howl({
+                urls : ['sounds/clav/' + fn + '.ogg',
+                        'sounds/clav/' + fn + '.mp3'],
+                volume : 0.2,
+                onload : sound_load(),
+            }))
+        }
+
+        // load swell sounds
+        for (var i = 1; i <= 3; i++) {
+            swells.push(new Howl({
+                urls : ['sounds/swells/swell' + i + '.ogg',
+                        'sounds/swells/swell' + i + '.mp3'],
+                volume : 1,
+                onload : sound_load(),
+            }))
+        }
+
+        /*
+        function testuser() {
+            data = {user: 'Slaporte'}
+            newuser_action(data, 'en', svg)
+        }
+
+        testuser()
+        */
+
+        for (lang in langs) {
+            if (langs.hasOwnProperty(lang)) {
+                $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + langs[lang][0] + '">' + langs[lang][0] + ' Wikipedia <span class="conStatus" id="' + lang + '-status"></span></label></p>')
+                SOCKETS[lang] = new wikipediaSocket.init(langs[lang][1], lang, svg);
+                var box = $('#' + lang + '-enable');
+                if (box.is(':checked')) {
+                    enable(lang)
+                }
+                box.click(make_click_handler(box, lang));
+            }
+        }
+
+        enabled_langs = return_lang_settings();
+
+        if (!enabled_langs.length) {
+            enabled_langs.push(DEFAULT_LANG)
+        }
+        for (var i = 0; i < enabled_langs.length + 1; i ++) {
+            var lang = enabled_langs[i];
+            $('#' + lang + '-enable').prop('checked', true);
+            if (SOCKETS[lang] && (!SOCKETS[lang].connection ||
+                                  SOCKETS[lang].connection.readyState == 3)) {
+                SOCKETS[lang].connect();
+            }
+        }
 
     })
     </script>
