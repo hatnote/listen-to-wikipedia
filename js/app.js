@@ -151,31 +151,31 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
 
                 if (data.ns == 'Main') {
                     if (!isNaN(data.change_size)) {
-                        var rc_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User:' + data.user + '" target="_blank">' + data.user + '</a>'
+                        var rc_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User:' + data.user + '" target="_blank">' + data.user + '</a>';
                         if (data.change_size < 0) {
                             if (data.change_size == -1) {
-                                rc_str += ' removed ' + Math.abs(data.change_size) + ' byte from'
+                                rc_str += ' removed ' + Math.abs(data.change_size) + ' byte from';
                             } else {
-                                rc_str += ' removed ' + Math.abs(data.change_size) + ' bytes from'
+                                rc_str += ' removed ' + Math.abs(data.change_size) + ' bytes from';
                             }
-                        } else if (data.change_size == 0) {
-                            rc_str += ' edited'
+                        } else if (data.change_size === 0) {
+                            rc_str += ' edited';
                         } else {
                             if (data.change_size == 1) {
-                                rc_str += ' added ' + Math.abs(data.change_size) + ' byte to'
+                                rc_str += ' added ' + Math.abs(data.change_size) + ' byte to';
                             } else {
-                                rc_str += ' added ' + Math.abs(data.change_size) + ' bytes to'
+                                rc_str += ' added ' + Math.abs(data.change_size) + ' bytes to';
                             }
                         }
 
                         rc_str += ' <a href="' + data.url + '" target="_blank">' + data.page_title + '</a> ';
                         if (data.is_anon) {
-                            rc_str += ' <span class="log-anon">(ungregistered user)</span>'
+                            rc_str += ' <span class="log-anon">(ungregistered user)</span>';
                         }
                         if (data.is_bot) {
-                            rc_str += ' <span class="log-bot">(bot)</span>'
+                            rc_str += ' <span class="log-bot">(bot)</span>';
                         }
-                        rc_str += ' <span class="lang">(' + lid + ')</span>'
+                        rc_str += ' <span class="lang">(' + lid + ')</span>';
                         log_rc(rc_str, 20);
 
                         wp_action(data, svg_area);
@@ -186,6 +186,9 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                            data.url != 'byemail' &&
                            s_welcome) {
                     newuser_action(data, lid, svg_area);
+                    var nu_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User_talk:' + data.user +'">' + data.user + '</a>';
+                    nu_str += ' joined ' + lid + ' Wikipedia! Welcome!';
+                    log_rc(nu_str, 20);
                 }
             };
         }
