@@ -54,8 +54,16 @@ a:hover {
     margin: 1em;
 }
 .article-label {
-    font: 1em sans-serif;
-}
+    font: 1.0em sans-serif;
+    text-shadow:1px 1px 0 rgb(28, 39, 51),
+    -1px -1px 0 rgb(28, 39, 51),
+    1px -1px 0 rgb(28, 39, 51),
+    -1px 1px 0 rgb(28, 39, 51),
+    0px 1px 0 rgb(28, 39, 51),
+    1px 0px 0 rgb(28, 39, 51),
+    0px -1px 0 rgb(28, 39, 51),
+    -1px 0px 0 rgb(28, 39, 51);
+    }
 .newuser-label {
     font: 1em sans-serif;
     opacity: 1;
@@ -71,6 +79,12 @@ a:hover {
 .lang {
     color: #bdc3c7;
     padding: auto .5em;
+}
+.log-bot {
+    color: rgb(155, 89, 182);
+}
+.log-anon {
+    color: rgb(46, 204, 113);
 }
 .loc {
     border-bottom: 1px dashed #ccc;

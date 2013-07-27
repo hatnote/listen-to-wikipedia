@@ -66,18 +66,18 @@ function wp_action(data, svg_area) {
         .attr('target', '_blank')
         .attr('fill', svg_text_color);
 
-    var circle = circle_container.append("circle")
+    var circle = circle_container.append('circle')
         .classed(type, true)
         .attr('r', size)
         .transition()
         .duration(max_life)
-        .style("opacity", 0)
+        .style('opacity', 0)
         .each('end', function() {
             circle_group.remove();
         })
         .remove();
 
-    circle_container.on("mouseover", function() {
+    circle_container.on('mouseover', function() {
         if (no_label) {
             no_label = false;
             circle_container.append('text')
@@ -86,7 +86,7 @@ function wp_action(data, svg_area) {
                 .attr('text-anchor', 'middle')
                 .transition()
                 .delay(1000)
-                .style("opacity", 0)
+                .style('opacity', 0)
                 .duration(2000)
                 .each('end', function() { no_label = true; })
                 .remove();
@@ -101,7 +101,7 @@ function wp_action(data, svg_area) {
             .attr('text-anchor', 'middle')
             .transition()
             .delay(1000)
-            .style("opacity", 0)
+            .style('opacity', 0)
             .duration(2000)
             .each('end', function() { no_label = true; })
             .remove();
@@ -151,12 +151,31 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
 
                 if (data.ns == 'Main') {
                     if (!isNaN(data.change_size)) {
-                        var rc_str = '"<a href="' + data.url +
-                                     '" target="_blank">' + data.page_title +
-                                     '</a> was edited by <a href="http://' + lid +
-                                     '.wikipedia.org/wiki/User:' + data.user +
-                                     '" target="_blank">' + data.user + '</a>" (' + data.change_size +
-                                     ' bytes changed) <span class="lang">(' + lid + ')</span>';
+                        var rc_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User:' + data.user + '" target="_blank">' + data.user + '</a>'
+                        if (data.change_size < 0) {
+                            if (data.change_size == -1) {
+                                rc_str += ' removed ' + Math.abs(data.change_size) + ' byte from'
+                            } else {
+                                rc_str += ' removed ' + Math.abs(data.change_size) + ' bytes from'
+                            }
+                        } else if (data.change_size == 0) {
+                            rc_str += ' edited'
+                        } else {
+                            if (data.change_size == 1) {
+                                rc_str += ' added ' + Math.abs(data.change_size) + ' byte to'
+                            } else {
+                                rc_str += ' added ' + Math.abs(data.change_size) + ' bytes to'
+                            }
+                        }
+
+                        rc_str += ' <a href="' + data.url + '" target="_blank">' + data.page_title + '</a> ';
+                        if (data.is_anon) {
+                            rc_str += ' <span class="log-anon">(ungregistered user)</span>'
+                        }
+                        if (data.is_bot) {
+                            rc_str += ' <span class="log-bot">(bot)</span>'
+                        }
+                        rc_str += ' <span class="lang">(' + lid + ')</span>'
                         log_rc(rc_str, 20);
 
                         wp_action(data, svg_area);
@@ -210,7 +229,7 @@ function play_sound(size, type, volume) {
     index = Math.max(1, index);
     if (current_notes < note_overlap) {
         current_notes++;
-        if (type == 'sub') {
+        if (type == 'add') {
             celesta[index].play();
         } else {
             clav[index].play();
@@ -240,19 +259,19 @@ function newuser_action(data, lid, svg_area) {
         .attr('target', '_blank');
 
     user_group.transition()
-        .delay(14000)
+        .delay(7000)
         .remove();
 
     user_container.transition()
-        .delay(13500)
+        .delay(4000)
         .style('opacity', 0)
-        .duration(500);
+        .duration(3000);
 
     user_container.append('rect')
         .attr('opacity', 0)
         .transition()
-        .delay(4000)
-        .duration(500)
+        .delay(100)
+        .duration(3000)
         .attr('opacity', 1)
         .attr('fill', newuser_box_color)
         .attr('width', width)
@@ -264,8 +283,8 @@ function newuser_action(data, lid, svg_area) {
         .classed('newuser-label', true)
         .attr('transform', 'translate(' + y +', 25)')
         .transition()
-        .delay(4500)
-        .duration(500)
+        .delay(1500)
+        .duration(1000)
         .text(messages[message])
         .attr('text-anchor', 'middle');
 
