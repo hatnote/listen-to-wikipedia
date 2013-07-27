@@ -48,7 +48,7 @@
         'id': ['Indonesian', 'ws://wikimon.hatnote.com:9100']
     }
 
-    /* Computers-only
+    /*
        ============== */
 
     var w = window,
@@ -67,7 +67,12 @@
         all_loaded = false,
         s_titles = true,
         s_welcome = true,
-        s_langs = [] // TODO: set up lang boxes.
+        s_langs = [];
+
+    var user_announcements = false;
+    setTimeout(function() {
+        user_announcements = true;
+    }, 20000);
 
     $(function(){
 
@@ -218,7 +223,7 @@
         <h2>About</h2>
         <p><a href='http://blog.hatnote.com'>Read more</a> about this project.</p>
         <p>Listen to Wikipedia's recent changes feed. The sounds indicate addition or subtraction from a Wikipedia articles, and the pitch changes according to the size of the edit. Green circles show edits from <a href='http://en.wikipedia.org/wiki/Wikipedia:User_access_levels#Unregistered_users'>unregistered contributors</a>, and purple circles mark edits performed by <a href='http://en.wikipedia.org/wiki/Wikipedia:Bots'>automated bots</a>. You may see announcements for new users as they join the site -- leave them a note on their talk page, and welcome them to our encyclopedia!</p>
-        <p>This project is built using <a href='d3js.org'>D3</a> and <a href='https://github.com/goldfire/howler.js'>HowlerJS</a>. It is based on <a href='http://www.listentobitcoin.com/'>Listen to Bitcoin</a> by <a href='https://github.com/MaxLaumeister'>Maximillian Laumeister</a>. Our source is <a href='https://github.com/hatnote/listentowikipedia'>available on GitHub</a>, and you can read more about this project.</p>
+        <p>This project is built using <a href='d3js.org'>D3</a> and <a href='https://github.com/goldfire/howler.js'>HowlerJS</a>. It is based on <a href='http://www.listentobitcoin.com/'>Listen to Bitcoin</a> by <a href='https://github.com/MaxLaumeister'>Maximillian Laumeister</a>. Our source is <a href='https://github.com/hatnote/listen-to-wikipedia'>available on GitHub</a>, and you can read more about this project.</p>
         <p>Built by <a href='http://github.com/slaporte'>Stephen LaPorte</a> and <a href='http://github.com/mahmoud'>Mahmoud Hashemi</a>.
     </div>
 </body>

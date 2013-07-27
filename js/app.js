@@ -185,7 +185,9 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                 } else if (data.page_title == 'Special:Log/newusers' &&
                            data.url != 'byemail' &&
                            s_welcome) {
-                    newuser_action(data, lid, svg_area);
+                    if (user_announcements) {
+                        newuser_action(data, lid, svg_area);
+                    }
                     var nu_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User_talk:' + data.user +'">' + data.user + '</a>';
                     nu_str += ' joined ' + lid + ' Wikipedia! Welcome!';
                     log_rc(nu_str, 20);
