@@ -43,7 +43,7 @@ function wp_action(data, svg_area) {
 
     var circle_id = 'd' + ((Math.random() * 100000) | 0);
     var abs_size = Math.abs(size);
-    size = Math.sqrt(abs_size) * scale_factor;
+    size = Math.max(Math.sqrt(abs_size) * scale_factor, 3);
     var x = Math.random() * (width - size) + size;
     var y = Math.random() * (height - size) + size;
 
@@ -427,4 +427,3 @@ var insert_comma = function(s) {
 
     return res;
 }
-
