@@ -3,7 +3,7 @@ function wp_action(data, svg_area) {
     if (total_edits == 1) {
         $('#edit_counter').html('You have seen <span>' + total_edits + ' edit</span>.');
     } else {
-        $('#edit_counter').html('You have seen a total of <span>' + total_edits + ' edits</span>.');
+        $('#edit_counter').html('You have seen a total of <span>' + insert_comma(total_edits) + ' edits</span>.');
     }
     var now = new Date();
     edit_times.push(now);
@@ -411,3 +411,20 @@ function update_epm(epm, svg_area) {
         epm_text.text(epm + ' edits per minute');
     }
 }
+
+var insert_comma = function(s) {
+    s = s.toFixed(0);
+    var l = s.length;
+    var res = "" + s[0];
+    for (var i=1; i<l-1; i++) {
+        if ((l - i) % 3 == 0)
+            res += ",";
+        res +=s[i];
+    }
+    res +=s[l-1];
+
+    res = res.replace(',.','.');
+
+    return res;
+}
+
