@@ -33,7 +33,8 @@
         bot_color = 'rgb(155, 89, 182)',
         anon_color = 'rgb(46, 204, 113)',
         edit_color = '#fff',
-        sound_totals = 47;
+        sound_totals = 47,
+        total_edits = 0;
 
     /* Languages
        ========= */
@@ -45,6 +46,10 @@
         'ja': ['Japanese', 'ws://wikimon.hatnote.com:9030'],
         'es': ['Spanish', 'ws://wikimon.hatnote.com:9040'],
         'fr': ['French', 'ws://wikimon.hatnote.com:9050'],
+        'nl': ['Dutch', 'ws://wikimon.hatnote.com:9060'],
+        'it': ['Italian', 'ws://wikimon.hatnote.com:9070'],
+        'sv': ['Swedish', 'ws://wikimon.hatnote.com:9080'],
+        'ar': ['Arabic', 'ws://wikimon.hatnote.com:9090'],
         'id': ['Indonesian', 'ws://wikimon.hatnote.com:9100']
     }
 
@@ -130,7 +135,7 @@
         }
 
         // load celesta and clav sounds
-        for (var i = 1; i <= 22; i++) {
+        for (var i = 1; i <= 24; i++) {
             if (i > 9) {
                 fn = 'c0' + i;
             } else {
@@ -211,18 +216,24 @@
                 <h3>Recent changes</h3>
                 <ul id='rc-log'>
                 </ul>
+                 <div class="note">
+                  <p id="edit_counter"></p>
+                  <p>For more, see Wikipedia's RecentChanges pages for <a href="http://www.wikipedia.org/">each language</a>.</p>
+                </div>
             </div>
         </div>
-        <h2>Settings</h2>
+    </div>
+    <div class="foot">
+        <h3>Settings</h3>
         <p><input type="checkbox" name="welcome" id="welcome">
         <label for='welcome'>Hide new user announcements</label></p>
         <p><input type="checkbox" name="titles" id="titles">
         <label for='titles'>Hide article titles</label></p>
-        <h2>Languages</h2>
+        <h3>Languages</h3>
         <div id='lang-boxes'></div>
-        <h2>About</h2>
+        <h3>About</h3>
         <p><a href='http://blog.hatnote.com'>Read more</a> about this project.</p>
-        <p>Listen to Wikipedia's recent changes feed. The sounds indicate addition or subtraction from a Wikipedia articles, and the pitch changes according to the size of the edit. Green circles show edits from <a href='http://en.wikipedia.org/wiki/Wikipedia:User_access_levels#Unregistered_users'>unregistered contributors</a>, and purple circles mark edits performed by <a href='http://en.wikipedia.org/wiki/Wikipedia:Bots'>automated bots</a>. You may see announcements for new users as they join the site -- leave them a note on their talk page, and welcome them to our encyclopedia!</p>
+        <p>Listen to Wikipedia's recent changes feed. The sounds indicate addition or subtraction from a Wikipedia articles, and the pitch changes according to the size of the edit. Green circles show edits from <a href='http://en.wikipedia.org/wiki/Wikipedia:User_access_levels#Unregistered_users'>unregistered contributors</a>, and purple circles mark edits performed by <a href='http://en.wikipedia.org/wiki/Wikipedia:Bots'>automated bots</a>. You may see announcements for new users as they join the site -- you can welcome him or her by adding a note on  him or her a note on their talk page, and welcome them to our encyclopedia!</p>
         <p>This project is built using <a href='d3js.org'>D3</a> and <a href='https://github.com/goldfire/howler.js'>HowlerJS</a>. It is based on <a href='http://www.listentobitcoin.com/'>Listen to Bitcoin</a> by <a href='https://github.com/MaxLaumeister'>Maximillian Laumeister</a>. Our source is <a href='https://github.com/hatnote/listen-to-wikipedia'>available on GitHub</a>, and you can read more about this project.</p>
         <p>Built by <a href='http://github.com/slaporte'>Stephen LaPorte</a> and <a href='http://github.com/mahmoud'>Mahmoud Hashemi</a>.
     </div>

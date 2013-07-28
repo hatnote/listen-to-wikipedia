@@ -1,4 +1,10 @@
 function wp_action(data, svg_area) {
+    total_edits += 1;
+    if (total_edits == 1) {
+        $('#edit_counter').html('You have seen <span>' + total_edits + ' edit</span>.');
+    } else {
+        $('#edit_counter').html('You have seen a total of <span>' + total_edits + ' edits</span>.');
+    }
     var now = new Date();
     edit_times.push(now);
     to_save = [];
@@ -188,7 +194,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                     if (user_announcements) {
                         newuser_action(data, lid, svg_area);
                     }
-                    var nu_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User_talk:' + data.user +'">' + data.user + '</a>';
+                    var nu_str = '<a href="http://' + lid + '.wikipedia.org/w/index.php?title=User_talk:' + data.user + '&action=edit&section=new">' + data.user + '</a>';
                     nu_str += ' joined ' + lid + ' Wikipedia! Welcome!';
                     log_rc(nu_str, 20);
                 }
@@ -256,7 +262,7 @@ function newuser_action(data, lid, svg_area) {
                     'Wikipedia has a new user, ' + data.user + '! Welcome!',
                     'Welcome, ' + data.user + ' has joined Wikipedia!'];
     var message = Math.round(Math.random() * (messages.length - 1));
-    var user_link = 'http://' + lid + '.wikipedia.org/wiki/User_talk:' + data.user;
+    var user_link = 'http://' + lid + '.wikipedia.org/w/index.php?title=User_talk:' + data.user + '&action=edit&section=new';
     var user_group = svg_area.append('g');
 
     var user_container = user_group.append('a')

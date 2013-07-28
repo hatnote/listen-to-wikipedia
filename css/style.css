@@ -1,3 +1,6 @@
+* {
+    margin: 0;
+}
 body {
     margin: 0;
     font: 1em sans-serif;
@@ -10,12 +13,20 @@ h1 {
     margin: 0;
     color: #1c2733;
 }
+p {
+    line-height: 1.5em;
+    margin-bottom: .5em;
+}
 a {
     color: #306596;
 }
 a:hover {
     color: #cc4731;
 }
+label {
+    margin-left: .5em;
+}
+
 #area {
     overflow: hidden;
 }
@@ -39,10 +50,37 @@ a:hover {
 #rc-log {
     list-style-type: none;
 }
+.note {
+    margin: 0;
+    padding: .5em;
+    background: rgb(248, 248, 248);
+    border-top: 1px solid #d8e6ec;
+    font-size: .8em;
+    color: #ccc;
+    padding-bottom: 1px;
+}
+#edit_counter {
+    font-size: 1.5em;
+    color: #000;
+}
+#edit_counter span {
+    color: #cc4731;
+}
 #content {
     margin: 1em auto 4em auto;
     max-width: 960px;
     position: relative;
+}
+.foot {
+    margin: 0 auto 4em auto;
+    max-width: 960px;
+    position: relative;
+    padding: 0 .5em 0 .5em;
+}
+.foot h3 {
+    padding-top: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #eee;
 }
 .conStatus {
     color: #bdc3c7;
