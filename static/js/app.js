@@ -44,9 +44,10 @@ function wp_action(data, svg_area) {
     var circle_id = 'd' + ((Math.random() * 100000) | 0);
     var abs_size = Math.abs(size);
     size = Math.max(Math.sqrt(abs_size) * scale_factor, 3);
+    
+    Math.seedrandom(data.page_title)
     var x = Math.random() * (width - size) + size;
     var y = Math.random() * (height - size) + size;
-
     if (csize > 0) {
         play_sound(size, 'add', 1);
     } else {
@@ -157,6 +158,14 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
 
                 if (data.ns == 'Main') {
                     if (!isNaN(data.change_size)) {
+                        if (data.summary && 
+                            (data.summary.toLowerCase().indexOf('revert') > -1 ||
+                            data.summary.toLowerCase().indexOf('undo') > -1 ||
+                            data.summary.toLowerCase().indexOf('undid') > -1)) {
+                            data.revert = true;
+                        } else {
+                            data.revert = false;
+                        }
                         var rc_str = '<a href="http://' + lid + '.wikipedia.org/wiki/User:' + data.user + '" target="_blank">' + data.user + '</a>';
                         if (data.change_size < 0) {
                             if (data.change_size == -1) {
@@ -180,6 +189,9 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                         }
                         if (data.is_bot) {
                             rc_str += ' <span class="log-bot">(bot)</span>';
+                        }
+                        if (data.revert) {
+                            rc_str += ' <span class="log-undo">(undo)</span>';
                         }
                         rc_str += ' <span class="lang">(' + lid + ')</span>';
                         log_rc(rc_str, 20);

@@ -10,6 +10,7 @@
     <script src='js/howler.min.js'></script>
     <script src="js/reconnecting-websocket.min.js" type="text/javascript"></script>
     <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/seedrandom.js" type="text/javascript"></script>
     <script>
 
     /* Settings
@@ -72,8 +73,8 @@
         d = document,
         e = d.documentElement,
         g = d.getElementsByTagName('#area svg')[0],
-        width = w.innerWidth || e.clientWidth || g.clientWidth,
-        height = (w.innerHeight - $('#header').height()) || (e.clientHeight - $('#header').height())|| (g.clientHeight - $('#header').height());
+        width = w.innerWidth || e.clientWidth || g.clientWidth;
+        height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
 
     var celesta = [],
         clav = [],

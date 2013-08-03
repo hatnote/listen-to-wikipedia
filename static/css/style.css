@@ -124,6 +124,9 @@ label {
 .log-anon {
     color: rgb(46, 204, 113);
 }
+.log-undo {
+    color: rgb(236, 112, 99)
+}
 .loc {
     border-bottom: 1px dashed #ccc;
 }
