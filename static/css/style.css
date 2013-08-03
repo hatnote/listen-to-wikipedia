@@ -131,6 +131,7 @@ label {
 #lang-boxes p {
     float: left;
     width: 20em;
+    font-size: .9em;
 }
 
 .clear br {
