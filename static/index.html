@@ -5,12 +5,51 @@
     <meta name="description" content="Listen to recent changes on Wikipedia">
     <meta name="keywords" content="hatnote, listen, recent changes, sound, music, wikipedia, edits, visualization">
     <meta name="author" content="Stephen LaPorte and Mahmoud Hashemi">
-    <script src='js/jquery-1.9.1.min.js'></script>
-    <script src='js/d3.min.js'></script>
-    <script src='js/howler.min.js'></script>
+    <link rel="stylesheet" type="text/css" href="css/nouislider.custom.css">
+    <script src="js/seedrandom.js" type="text/javascript"></script>
+    <script src="js/jquery-1.9.1.min.js"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/howler.min.js"></script>
     <script src="js/reconnecting-websocket.min.js" type="text/javascript"></script>
     <script src="js/app.js" type="text/javascript"></script>
-    <script src="js/seedrandom.js" type="text/javascript"></script>
+
+    <script src="js/jquery.nouislider.min.js"></script>
+    <script src="js/howler.min.js"></script>
+    <script>
+      var global_mute = false;
+      var global_volume = 50;
+      $(function(){
+      Howler.volume(global_volume * .01);
+
+      $("#volumeControl").click(function() {
+        if (!global_mute) {
+          global_mute = false;
+          Howler.mute();
+          $("#volumeControl").css("background-position", "0 0");
+        } else {
+          global_mute = false;
+          Howler.unmute();
+          $("#volumeControl").css("background-position", "0 -46px");
+        }
+      });
+
+      $("#volumeSlider").noUiSlider({
+        range : [-99, 0],
+        start : 0,
+        handles : 1,
+        step : 1,
+        orientation : "horizontal",
+        slide : function() {
+          global_volume = 100 + $(this).val();
+          var howler_volume = global_volume * 0.01;
+          if (howler_volume <= 0.01) {
+            Howler.mute();
+          } else {
+            Howler.unmute();
+            Howler.volume(global_volume * .01);
+          }
+      }}); });
+    </script>
     <script>
 
     /* Settings
@@ -219,8 +258,11 @@
 </head>
 <body>
     <div id='header'>
-        <span class="about-link"><a id="about-link" href="">about</a> & <a href="http://blog.hatnote.com/">blog</a></span>
-        <h1>Listen to Wikipedia</h1>
+      <span class="about-link">
+        <span id="volumeWrapper" class="interface">
+          <span id="volumeSlider" class="noUiSlider"></span>
+        </span><a id="about-link" href="">about</a> & <a href="http://blog.hatnote.com/">blog</a></span>
+      <h1>Listen to Wikipedia</h1>
     </div>
     <div id='area'></div>
     <div id='content'>

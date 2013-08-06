@@ -157,3 +157,31 @@ label {
     text-align: center;
     margin: 0.5em;
 }
+
+
+
+
+/* volume stuff */
+#volumeWrapper {
+  width: 50px;
+	margin: 2em;
+}
+
+#volumeControl {
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+#volumeControl:hover {
+	opacity: 1;
+}
+
+#volumeSlider {
+  width: 50px;
+  display: inline-block;
+  background-color: rgba(192,192,192,0.4);
+}
+
+#volumeSlider div {
+  display: inline-block;
+}
