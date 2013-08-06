@@ -163,7 +163,7 @@ label {
 
 /* volume stuff */
 #volumeWrapper {
-  width: 50px;
+  width: 70px;
 	margin: 2em;
 }
 
@@ -177,7 +177,7 @@ label {
 }
 
 #volumeSlider {
-  width: 50px;
+  width: 70px;
   display: inline-block;
   background-color: rgba(192,192,192,0.4);
 }
