@@ -23,7 +23,6 @@ function wp_action(data, svg_area) {
         if (opacity > 0.5) {
             opacity = 0.5;
         }
-        var epm_contaner = svg_area.append;
         /*rate_bg.attr('opacity', opacity)*/
         update_epm(to_save.length, svg_area);
     }
@@ -44,7 +43,7 @@ function wp_action(data, svg_area) {
     var circle_id = 'd' + ((Math.random() * 100000) | 0);
     var abs_size = Math.abs(size);
     size = Math.max(Math.sqrt(abs_size) * scale_factor, 3);
-    
+
     Math.seedrandom(data.page_title)
     var x = Math.random() * (width - size) + size;
     var y = Math.random() * (height - size) + size;
@@ -158,7 +157,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
 
                 if (data.ns == 'Main') {
                     if (!isNaN(data.change_size)) {
-                        if (data.summary && 
+                        if (data.summary &&
                             (data.summary.toLowerCase().indexOf('revert') > -1 ||
                             data.summary.toLowerCase().indexOf('undo') > -1 ||
                             data.summary.toLowerCase().indexOf('undid') > -1)) {
@@ -185,7 +184,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
 
                         rc_str += ' <a href="' + data.url + '" target="_blank">' + data.page_title + '</a> ';
                         if (data.is_anon) {
-                            rc_str += ' <span class="log-anon">(ungregistered user)</span>';
+                            rc_str += ' <span class="log-anon">(unregistered user)</span>';
                         }
                         if (data.is_bot) {
                             rc_str += ' <span class="log-bot">(bot)</span>';
