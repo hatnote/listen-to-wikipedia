@@ -62,7 +62,8 @@
         'kn': ['Kannada', 'ws://wikimon.hatnote.com:9170'],
         'or': ['Oriya', 'ws://wikimon.hatnote.com:9180'],
         'sa': ['Sanskrit', 'ws://wikimon.hatnote.com:9190'],
-        'gu': ['Gujarati' , 'ws://wikimon.hatnote.com:9200']
+        'gu': ['Gujarati' , 'ws://wikimon.hatnote.com:9200'],
+        'wikidata': ['Wikidata' , 'ws://wikimon.hatnote.com:9220']
     }
 
     /*
@@ -188,7 +189,11 @@
 
         for (lang in langs) {
             if (langs.hasOwnProperty(lang)) {
-                $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + lang + '-enable">' + langs[lang][0] + ' Wikipedia <span class="conStatus" id="' + lang + '-status"></span></label></p>')
+                if (lang == 'wikidata') {
+                    $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + lang + '-enable">' + langs[lang][0] + ' <span class="conStatus" id="' + lang + '-status"></span></label></p>')
+                } else {
+                    $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + lang + '-enable">' + langs[lang][0] + ' Wikipedia <span class="conStatus" id="' + lang + '-status"></span></label></p>')
+                }
                 SOCKETS[lang] = new wikipediaSocket.init(langs[lang][1], lang, svg);
                 var box = $('#' + lang + '-enable');
                 if (box.is(':checked')) {
