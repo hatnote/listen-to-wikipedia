@@ -124,6 +124,9 @@ label {
 .log-anon {
     color: rgb(46, 204, 113);
 }
+.log-undo {
+    color: rgb(236, 112, 99)
+}
 .loc {
     border-bottom: 1px dashed #ccc;
 }
@@ -153,4 +156,32 @@ label {
 #loading p {
     text-align: center;
     margin: 0.5em;
+}
+
+
+
+
+/* volume stuff */
+#volumeWrapper {
+  width: 70px;
+	margin: 2em;
+}
+
+#volumeControl {
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+#volumeControl:hover {
+	opacity: 1;
+}
+
+#volumeSlider {
+  width: 70px;
+  display: inline-block;
+  background-color: rgba(192,192,192,0.4);
+}
+
+#volumeSlider div {
+  display: inline-block;
 }
