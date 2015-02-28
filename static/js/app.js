@@ -155,8 +155,11 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                     return;
                 }
 
-                if (data.ns == 'Main') {
-                    if (!isNaN(data.change_size)) {
+                if (data.ns == 'Main' || DEBUG) {
+                    if (!isNaN(data.change_size) && (TAG_FILTERS.length == 0 || $(TAG_FILTERS).filter(data.hashtags).length > 0)) {
+                        if (TAG_FILTERS.length > 0) {
+                            console.log('Filtering for: ' + TAG_FILTERS)
+                        }
                         if (data.summary &&
                             (data.summary.toLowerCase().indexOf('revert') > -1 ||
                             data.summary.toLowerCase().indexOf('undo') > -1 ||
@@ -196,8 +199,6 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                         log_rc(rc_str, 20);
 
                         wp_action(data, svg_area);
-                    } else {
-                        console.log('ValueError:' + change_size + 'is not a number');
                     }
                 } else if (data.page_title == 'Special:Log/newusers' &&
                            data.url != 'byemail' &&
@@ -421,6 +422,35 @@ function update_epm(epm, svg_area) {
     } else if (epm_text.text) {
         epm_text.text(epm + ' edits per minute');
     }
+}
+
+var tag_area = {},
+    tag_text = false,
+    tag_box = false;
+
+function update_tag_warning(svg_area) {
+    if (TAG_FILTERS.length == 0) {
+        if (!$.isEmptyObject(tag_area)) {
+            tag_area.remove();
+            tag_area = {}, tag_text = false;
+        }
+        return
+    }
+    if (!tag_text) {
+        tag_area = svg_area.append('g');
+        tag_box = tag_area.append('rect')
+            .attr('fill', newuser_box_color)
+            .attr('opacity', 0.5)
+            .attr('height', 25);
+        tag_text = tag_area.append('text')
+            .classed('newuser-label', true)
+            .attr('transform', 'translate(5, 18)')
+            .style('font-size', '.8em');
+    }
+    tag_area.attr('transform', 'translate(0, ' + (height - 50) + ')');
+    tag_text.text('Listening to: #' + TAG_FILTERS.join(', #'));
+    var tag_bbox = tag_text.node().getBBox();
+    tag_box.attr('width', tag_bbox.width + 10);
 }
 
 var insert_comma = function(s) {
