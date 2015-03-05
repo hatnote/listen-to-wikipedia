@@ -1,5 +1,8 @@
-function wp_action(data, svg_area) {
-    total_edits += 1;
+function wp_action(data, svg_area, silent) {
+    var silent = silent || false;
+    if (!silent) {
+        total_edits += 1;
+    }
     if (total_edits == 1) {
         $('#edit_counter').html('You have seen <span>' + total_edits + ' edit</span>.');
     } else {
@@ -47,15 +50,24 @@ function wp_action(data, svg_area) {
     Math.seedrandom(data.page_title)
     var x = Math.random() * (width - size) + size;
     var y = Math.random() * (height - size) + size;
-    if (csize > 0) {
-        play_sound(size, 'add', 1);
+    if (!silent) {
+        if (csize > 0) {
+            play_sound(size, 'add', 1);
+        } else {
+            play_sound(size, 'sub', 1);
+        }
+    }
+    
+    if (silent) {
+        var starting_opacity = 0.2;
     } else {
-        play_sound(size, 'sub', 1);
+        var starting_opacity = 1;
     }
 
     var circle_group = svg_area.append('g')
         .attr('transform', 'translate(' + x + ', ' + y + ')')
-        .attr('fill', edit_color);
+        .attr('fill', edit_color)
+        .style('opacity', starting_opacity)
 
     var ring = circle_group.append('circle')
          .attr({r: size + 20,
@@ -100,7 +112,7 @@ function wp_action(data, svg_area) {
 
     });
 
-    if (s_titles) {
+    if (s_titles && !silent) {
         var text = circle_container.append('text')
             .text(label_text)
             .classed('article-label', true)
@@ -156,7 +168,9 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                 }
 
                 if (data.ns == 'Main' || DEBUG) {
-                    if (!isNaN(data.change_size) && (TAG_FILTERS.length == 0 || $(TAG_FILTERS).filter(data.hashtags).length > 0)) {
+                    if (!isNaN(data.change_size) && (TAG_FILTERS.length == 0 || $(TAG_FILTERS).filter($.map(data.hashtags, function(i) { 
+                        return i.toLowerCase();
+                    })).length > 0)) {
                         if (TAG_FILTERS.length > 0) {
                             console.log('Filtering for: ' + TAG_FILTERS)
                         }
@@ -199,6 +213,8 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                         log_rc(rc_str, 20);
 
                         wp_action(data, svg_area);
+                    } else if (!isNaN(data.change_size)) {
+                        wp_action(data, svg_area, true);
                     }
                 } else if (data.page_title == 'Special:Log/newusers' &&
                            data.url != 'byemail' &&
@@ -209,7 +225,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                     var nu_str = '<a href="http://' + lid + '.wikipedia.org/w/index.php?title=User_talk:' + data.user + '&action=edit&section=new">' + data.user + '</a>';
                     nu_str += ' joined ' + lid + ' Wikipedia! Welcome!';
                     log_rc(nu_str, 20);
-                }
+                } 
             };
         }
     };
@@ -451,6 +467,7 @@ function update_tag_warning(svg_area) {
     tag_text.text('Listening to: #' + TAG_FILTERS.join(', #'));
     var tag_bbox = tag_text.node().getBBox();
     tag_box.attr('width', tag_bbox.width + 10);
+    s_welcome = false;
 }
 
 var insert_comma = function(s) {

@@ -281,7 +281,7 @@
         onChange: function() {
           TAG_FILTERS = [];
           $('.tag span').each(function(val) {
-              var tag = $(this).text().trim().replace('#', '');
+              var tag = $(this).text().trim().replace('#', '').toLowerCase();
               if($.inArray(tag, TAG_FILTERS) === -1){
                 TAG_FILTERS.push(tag);  
               }
