@@ -51,7 +51,7 @@
             Howler.unmute();
             Howler.volume(global_volume * .01);
           }
-      }}); 
+      }});
 
 
     });
@@ -184,6 +184,10 @@
         $('#titles').click(
             make_click_handler($('#titles'), 'notitles')
         );
+        $('#hide_rc_box').click(
+            function() {$("#rc-log").toggle();}
+        );
+
         $('#about-link').click(function(){
             // because we use window.location to set languages.
             $('html, body').animate({scrollTop:$(document).height()}, 'slow');
@@ -284,7 +288,7 @@
           $('.tag span').each(function(val) {
               var tag = $(this).text().trim().replace('#', '').toLowerCase();
               if($.inArray(tag, TAG_FILTERS) === -1){
-                TAG_FILTERS.push(tag);  
+                TAG_FILTERS.push(tag);
               }
           });
           update_tag_warning(svg);
@@ -324,6 +328,9 @@
         <label for='welcome'>Hide new user announcements</label></p>
         <p><input type="checkbox" name="titles" id="titles">
         <label for='titles'>Hide article titles</label></p>
+        <p><input type="checkbox" name="hide_rc_box" id="hide_rc_box">
+        <label for="hide_rc_box">Hide recent changes console</label></p>
+
         <h3>Languages</h3>
         <div id='lang-boxes'> </div>
         <div class='clear'><br/></div>
