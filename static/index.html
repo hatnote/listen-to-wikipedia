@@ -185,6 +185,9 @@
         $('#titles').click(
             make_click_handler($('#titles'), 'notitles')
         );
+        $('#background_mode').click(
+            function() {$("#area svg").toggle();}
+        );
         $('#hide_rc_box').click(
             function() {$("#rc-log").toggle();}
         );
@@ -331,7 +334,8 @@
         <label for='titles'>Hide article titles</label></p>
         <p><input type="checkbox" name="hide_rc_box" id="hide_rc_box">
         <label for="hide_rc_box">Hide recent changes console</label></p>
-
+        <p><input type="checkbox" name="background_mode" id="background_mode">
+        <label for="background_mode">Hide graphics for background listening</label></p>
         <h3>Languages</h3>
         <div id='lang-boxes'> </div>
         <div class='clear'><br/></div>
