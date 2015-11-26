@@ -1,4 +1,4 @@
-Listen to Wikipedia is inspired by Maximillian Laumeister's [Listen to Bitcoin](http://www.listentobitcoin.com/). 
+Listen to Wikipedia is inspired by Maximillian Laumeister's [Listen to Bitcoin](http://www.bitlisten.com/). 
 
 ## About
 
