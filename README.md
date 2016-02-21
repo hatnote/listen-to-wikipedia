@@ -1,9 +1,13 @@
-Listen to Wikipedia is inspired by Maximillian Laumeister's [Listen to Bitcoin](http://www.bitlisten.com/). 
+# Listen to Wikipedia
+
+Real-time visualization and sonification of Wikipedia activity.
 
 ## About
 
-Built by Stephen LaPorte and Mahmoud Hashemi.
+Built by [Stephen LaPorte](https://twitter.com/sklaporte) and [Mahmoud Hashemi](https://twitter.com/mhashemi).
 
-## Sound
+Listen to Wikipedia is inspired by Maximillian Laumeister's [BitListen](http://www.bitlisten.com/).
 
-We fixed up some of the sounds using [Sound eXchange](http://sox.sourceforge.net/Docs/Documentation), which is some cool software.
+We fixed up some of the sounds using
+[Sound eXchange](http://sox.sourceforge.net/Docs/Documentation), which
+is some cool software.
