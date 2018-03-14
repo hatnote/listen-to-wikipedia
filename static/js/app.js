@@ -4,9 +4,9 @@ function wp_action(data, svg_area, silent) {
         total_edits += 1;
     }
     if (total_edits == 1) {
-        $('#edit_counter').html('You have seen <span>' + total_edits + ' edit</span>.');
+        $('#edit_counter').html('You have listened to <span>' + total_edits + ' edit</span>.');
     } else {
-        $('#edit_counter').html('You have seen a total of <span>' + insert_comma(total_edits) + ' edits</span>.');
+        $('#edit_counter').html('You have listened to a total of <span>' + insert_comma(total_edits) + ' edits</span>.');
     }
     var now = new Date();
     edit_times.push(now);
@@ -57,7 +57,7 @@ function wp_action(data, svg_area, silent) {
             play_sound(size, 'sub', 1);
         }
     }
-    
+
     if (silent) {
         var starting_opacity = 0.2;
     } else {
@@ -168,7 +168,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                 }
 
                 if (data.ns == 'Main' || DEBUG) {
-                    if (!isNaN(data.change_size) && (TAG_FILTERS.length == 0 || $(TAG_FILTERS).filter($.map(data.hashtags, function(i) { 
+                    if (!isNaN(data.change_size) && (TAG_FILTERS.length == 0 || $(TAG_FILTERS).filter($.map(data.hashtags, function(i) {
                         return i.toLowerCase();
                     })).length > 0)) {
                         if (TAG_FILTERS.length > 0) {
@@ -225,7 +225,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                     var nu_str = '<a href="http://' + lid + '.wikipedia.org/w/index.php?title=User_talk:' + data.user + '&action=edit&section=new">' + data.user + '</a>';
                     nu_str += ' joined ' + lid + ' Wikipedia! Welcome!';
                     log_rc(nu_str, 20);
-                } 
+                }
             };
         }
     };
