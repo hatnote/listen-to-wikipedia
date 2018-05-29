@@ -154,7 +154,7 @@
     $(function(){
 
         // Chrome 66 Autoplay Policy Compliance
-        if (getChromeVersion => 66){
+        if (getChromeVersion() >= 66){
             if (Howler.ctx.state == 'suspended') {
                 $('.about-link').prepend('<a class="unmute" href="#">enable sound?</a>');
             }
