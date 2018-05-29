@@ -489,3 +489,11 @@ var insert_comma = function(s) {
         return s;
     }
 }
+
+function getChromeVersion () {
+    // From https://stackoverflow.com/questions/4900436/how-to-detect-the-installed-chrome-version
+    // Thanks, Dan.
+    var raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+
+    return raw ? parseInt(raw[2], 10) : false;
+}

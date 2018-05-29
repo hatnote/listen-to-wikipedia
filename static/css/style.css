@@ -155,7 +155,11 @@ label {
     color: #fff;
     background-color: rgba(189, 195, 199, 0.6);
 }
-#loading p {
+.unmute {
+    color: #cc4732;
+}
+
+#loading p, {
     text-align: center;
     margin: 0.5em;
 }
