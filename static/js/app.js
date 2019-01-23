@@ -135,7 +135,6 @@ function wikipediaSocket() {
 wikipediaSocket.init = function(ws_url, lid, svg_area) {
     this.connect = function() {
         $('#' + lid + '-status').html('(connecting...)');
-        var loading = true;
         // Terminate previous connection, if any
         if (this.connection)
           this.connection.close();
