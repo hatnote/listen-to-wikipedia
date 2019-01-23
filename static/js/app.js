@@ -10,7 +10,7 @@ function wp_action(data, svg_area, silent) {
     }
     var now = new Date();
     edit_times.push(now);
-    to_save = [];
+    var to_save = [];
     if (edit_times.length > 1) {
         for (var i = 0; i < edit_times.length + 1; i ++) {
             var i_time = edit_times[i];
