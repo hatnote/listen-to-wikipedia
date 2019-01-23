@@ -47,7 +47,7 @@ function wp_action(data, svg_area, silent) {
     var abs_size = Math.abs(size);
     size = Math.max(Math.sqrt(abs_size) * scale_factor, 3);
 
-    Math.seedrandom(data.page_title)
+    Math.seedrandom(data.page_title);
     var x = Math.random() * (width - size) + size;
     var y = Math.random() * (height - size) + size;
     if (!silent) {
@@ -67,7 +67,7 @@ function wp_action(data, svg_area, silent) {
     var circle_group = svg_area.append('g')
         .attr('transform', 'translate(' + x + ', ' + y + ')')
         .attr('fill', edit_color)
-        .style('opacity', starting_opacity)
+        .style('opacity', starting_opacity);
 
     var ring = circle_group.append('circle')
          .attr({r: size + 20,
@@ -172,7 +172,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
                         return i.toLowerCase();
                     })).length > 0)) {
                         if (TAG_FILTERS.length > 0) {
-                            console.log('Filtering for: ' + TAG_FILTERS)
+                            console.log('Filtering for: ' + TAG_FILTERS);
                         }
                         if (data.summary &&
                             (data.summary.toLowerCase().indexOf('revert') > -1 ||
@@ -450,7 +450,7 @@ function update_tag_warning(svg_area) {
             tag_area.remove();
             tag_area = {}, tag_text = false;
         }
-        return
+        return;
     }
     if (!tag_text) {
         tag_area = svg_area.append('g');
@@ -488,7 +488,7 @@ var insert_comma = function(s) {
     } else {
         return s;
     }
-}
+};
 
 function getChromeVersion () {
     // From https://stackoverflow.com/questions/4900436/how-to-detect-the-installed-chrome-version
