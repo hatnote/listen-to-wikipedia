@@ -226,11 +226,7 @@
 
         // load celesta and clav sounds
         for (var i = 1; i <= 24; i++) {
-            if (i > 9) {
-                fn = 'c0' + i;
-            } else {
-                fn = 'c00' + i;
-            }
+            var fn = (i > 9) ? 'c0' + i : 'c00' + i;
             celesta.push(new Howl({
                 urls : ['sounds/celesta/' + fn + '.ogg',
                         'sounds/celesta/' + fn + '.mp3'],
