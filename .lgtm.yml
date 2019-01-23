@@ -1,0 +1,11 @@
+path_classifiers:
+  lobrary:
+    - static/css/jquery.tagsinput.css
+    - static/js/buzz.js
+    - static/js/d3.min.js
+    - static/js/howler.min.js
+    - static/js/jquery.nouislider.min.js
+    - static/js/jquery.tagsinput.js
+    - static/js/jquery-1.9.1.min.js
+    - static/js/reconnecting-websocket.min.js
+    - static/js/seedrandom.js
