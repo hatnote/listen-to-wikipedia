@@ -133,7 +133,7 @@
         d = document,
         e = d.documentElement,
         g = d.getElementsByTagName('#area svg')[0],
-        width = w.innerWidth || e.clientWidth || g.clientWidth;
+        width = w.innerWidth || e.clientWidth || g.clientWidth,
         height = (w.innerHeight  - $('#header').height())|| (e.clientHeight - $('#header').height()) || (g.clientHeight - $('#header').height());
 
     var celesta = [],
@@ -226,11 +226,7 @@
 
         // load celesta and clav sounds
         for (var i = 1; i <= 24; i++) {
-            if (i > 9) {
-                fn = 'c0' + i;
-            } else {
-                fn = 'c00' + i;
-            }
+            var fn = (i > 9) ? 'c0' + i : 'c00' + i;
             celesta.push(new Howl({
                 urls : ['sounds/celesta/' + fn + '.ogg',
                         'sounds/celesta/' + fn + '.mp3'],
@@ -264,7 +260,7 @@
         testuser()
         */
 
-        for (lang in langs) {
+        for (var lang in langs) {
             if (langs.hasOwnProperty(lang)) {
                 if (lang == 'wikidata') {
                     $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + lang + '-enable">' + langs[lang][0] + ' <span class="conStatus" id="' + lang + '-status"></span></label></p>')
@@ -280,17 +276,17 @@
             }
         }
 
-        enabled_langs = return_lang_settings();
+        var enabled_langs = return_lang_settings();
 
         if (!enabled_langs.length) {
             enabled_langs.push(DEFAULT_LANG)
         }
         for (var i = 0; i < enabled_langs.length + 1; i ++) {
-            var lang = enabled_langs[i];
-            $('#' + lang + '-enable').prop('checked', true);
-            if (SOCKETS[lang] && (!SOCKETS[lang].connection ||
-                                  SOCKETS[lang].connection.readyState == 3)) {
-                SOCKETS[lang].connect();
+            var enabled_lang = enabled_langs[i];
+            $('#' + enabled_lang + '-enable').prop('checked', true);
+            if (SOCKETS[enabled_lang] && (!SOCKETS[enabled_lang].connection ||
+                                  SOCKETS[enabled_lang].connection.readyState == 3)) {
+                SOCKETS[enabled_lang].connect();
             }
         }
       $('#filter').tagsInput({
