@@ -341,7 +341,7 @@ var return_hash_settings = function() {
 
 var return_lang_settings = function() {
     var enabled_hash = return_hash_settings();
-    enabled_langs = [];
+    var enabled_langs = [];
     for (var i = 0; i < enabled_hash.length +1; i ++) {
         var setting = enabled_hash[i];
         if (langs[setting]) {
