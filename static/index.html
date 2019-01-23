@@ -264,7 +264,7 @@
         testuser()
         */
 
-        for (lang in langs) {
+        for (var lang in langs) {
             if (langs.hasOwnProperty(lang)) {
                 if (lang == 'wikidata') {
                     $('#lang-boxes').append('<p><input type="checkbox" name="' + langs[lang][0] + '" id="' + lang + '-enable"/><label for="' + lang + '-enable">' + langs[lang][0] + ' <span class="conStatus" id="' + lang + '-status"></span></label></p>')
@@ -286,11 +286,11 @@
             enabled_langs.push(DEFAULT_LANG)
         }
         for (var i = 0; i < enabled_langs.length + 1; i ++) {
-            var lang = enabled_langs[i];
-            $('#' + lang + '-enable').prop('checked', true);
-            if (SOCKETS[lang] && (!SOCKETS[lang].connection ||
-                                  SOCKETS[lang].connection.readyState == 3)) {
-                SOCKETS[lang].connect();
+            var enabled_lang = enabled_langs[i];
+            $('#' + enabled_lang + '-enable').prop('checked', true);
+            if (SOCKETS[enabled_lang] && (!SOCKETS[enabled_lang].connection ||
+                                  SOCKETS[enabled_lang].connection.readyState == 3)) {
+                SOCKETS[enabled_lang].connect();
             }
         }
       $('#filter').tagsInput({
