@@ -418,7 +418,25 @@ function maybe_compute_epm(svg_area) {
 function compute_and_update_epm(svg_area) {
     var now = new Date();
     edit_times = edit_times.filter(t => (now.getTime() - t.getTime()) < 60000);
-    update_epm(edit_times.length, svg_area);
+    // Find the edit rate for the past minute over each WINDOW_INTERVAL ms,
+    // then compute a weighted moving average of those windows.
+    // TODO exponential smoothing instead of linear?
+    var windows = [];
+    var smoothed = 0;
+    var denom = 0;
+    const WINDOW_INTERVAL = 10000;
+    const N = 60000/WINDOW_INTERVAL;
+    var deltas = edit_times.map(t => now.getTime() - t.getTime());
+    for (var i = 0; i < N; i++) {
+        windows[i] = deltas.filter(d =>
+                (d < (i+1)*WINDOW_INTERVAL)
+                && (d > i*WINDOW_INTERVAL)
+            ).length;
+        smoothed += windows[i] * (N-i) * N;
+        denom += (N-i);
+    }
+    smoothed /= denom;
+    update_epm(Math.round(smoothed), svg_area);
 }
 
 function update_epm(epm, svg_area) {
