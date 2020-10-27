@@ -135,6 +135,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
             connection.onopen = function() {
                 console.log('Connection open to ' + lid);
                 $('#' + lid + '-status').html('(connected)');
+                window.setInterval(() => maybe_compute_epm(svg_area), 1000);
             };
 
             connection.onclose = function() {
@@ -404,6 +405,15 @@ var make_click_handler = function($box, setting) {
 
 var epm_text = false;
 var epm_container = {};
+var epm_lastupdate = false;
+
+function maybe_compute_epm(svg_area) {
+    var now = new Date();
+    if (!epm_lastupdate || now.getTime() - epm_lastupdate.getTime() >= 5000) {
+        compute_and_update_epm(svg_area);
+        epm_lastupdate = now;
+    }
+}
 
 function compute_and_update_epm(svg_area) {
     var now = new Date();
