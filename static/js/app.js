@@ -10,25 +10,12 @@ function wp_action(data, svg_area, silent) {
     }
     var now = new Date();
     edit_times.push(now);
-    to_save = [];
-    if (edit_times.length > 1) {
-        for (var i = 0; i < edit_times.length + 1; i ++) {
-            var i_time = edit_times[i];
-            if (i_time) {
-                var i_time_diff = now.getTime() - i_time.getTime();
-                if (i_time_diff < 60000) {
-                    to_save.push(edit_times[i]);
-                }
-            }
-        }
-        edit_times = to_save;
-        var opacity = 1 / (100 / to_save.length);
-        if (opacity > 0.5) {
-            opacity = 0.5;
-        }
-        /*rate_bg.attr('opacity', opacity)*/
-        update_epm(to_save.length, svg_area);
+    compute_and_update_epm(svg_area);
+    var opacity = 1 / (100 / edit_times.length);
+    if (opacity > 0.5) {
+        opacity = 0.5;
     }
+    /*rate_bg.attr('opacity', opacity)*/
 
     var size = data.change_size;
     var label_text = data.page_title;
@@ -417,6 +404,12 @@ var make_click_handler = function($box, setting) {
 
 var epm_text = false;
 var epm_container = {};
+
+function compute_and_update_epm(svg_area) {
+    var now = new Date();
+    edit_times = edit_times.filter(t => (now.getTime() - t.getTime()) < 60000);
+    update_epm(edit_times.length, svg_area);
+}
 
 function update_epm(epm, svg_area) {
     if (!epm_text) {
