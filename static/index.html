@@ -44,6 +44,8 @@
         orientation : "horizontal",
         slide : function() {
           global_volume = 100 + $(this).val();
+
+          $(".volumeVal").html((global_volume <= 1 ? 0 : global_volume) + "%")
           var howler_volume = global_volume * 0.01;
           if (howler_volume <= 0.01) {
             Howler.mute();
@@ -322,6 +324,7 @@
       <span class="about-link">
         <span id="volumeWrapper" class="interface">
           <span id="volumeSlider" class="noUiSlider"></span>
+          <span id="volumeVal" class="volumeVal">100%</span>
         </span><a id="about-link" href="">about</a> &amp; <a href="http://blog.hatnote.com/" target="_blank">blog</a> &amp; <a href="https://twitter.com/hatnotable" target="_blank">twitter</a> &amp; <a href="https://itunes.apple.com/us/app/listen-to-wikipedia/id832934300" target="_blank">app</a></span>
       <h1>Listen to Wikipedia</h1>
     </div>

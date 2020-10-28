@@ -194,3 +194,8 @@ label {
 #volumeSlider div {
   display: inline-block;
 }
+
+.volumeVal{
+    margin-left:10px;
+    color: blue;
+}
