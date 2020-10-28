@@ -10,25 +10,12 @@ function wp_action(data, svg_area, silent) {
     }
     var now = new Date();
     edit_times.push(now);
-    to_save = [];
-    if (edit_times.length > 1) {
-        for (var i = 0; i < edit_times.length + 1; i ++) {
-            var i_time = edit_times[i];
-            if (i_time) {
-                var i_time_diff = now.getTime() - i_time.getTime();
-                if (i_time_diff < 60000) {
-                    to_save.push(edit_times[i]);
-                }
-            }
-        }
-        edit_times = to_save;
-        var opacity = 1 / (100 / to_save.length);
-        if (opacity > 0.5) {
-            opacity = 0.5;
-        }
-        /*rate_bg.attr('opacity', opacity)*/
-        update_epm(to_save.length, svg_area);
+    compute_and_update_epm(svg_area);
+    var opacity = 1 / (100 / edit_times.length);
+    if (opacity > 0.5) {
+        opacity = 0.5;
     }
+    /*rate_bg.attr('opacity', opacity)*/
 
     var size = data.change_size;
     var label_text = data.page_title;
@@ -148,6 +135,7 @@ wikipediaSocket.init = function(ws_url, lid, svg_area) {
             connection.onopen = function() {
                 console.log('Connection open to ' + lid);
                 $('#' + lid + '-status').html('(connected)');
+                window.setInterval(() => maybe_compute_epm(svg_area), 1000);
             };
 
             connection.onclose = function() {
@@ -417,6 +405,39 @@ var make_click_handler = function($box, setting) {
 
 var epm_text = false;
 var epm_container = {};
+var epm_lastupdate = false;
+
+function maybe_compute_epm(svg_area) {
+    var now = new Date();
+    if (!epm_lastupdate || now.getTime() - epm_lastupdate.getTime() >= 5000) {
+        compute_and_update_epm(svg_area);
+        epm_lastupdate = now;
+    }
+}
+
+function compute_and_update_epm(svg_area) {
+    var now = new Date();
+    edit_times = edit_times.filter(t => (now.getTime() - t.getTime()) < 60000);
+    // Find the edit rate for the past minute over each WINDOW_INTERVAL ms,
+    // then compute a weighted moving average of those windows.
+    // TODO exponential smoothing instead of linear?
+    var windows = [];
+    var smoothed = 0;
+    var denom = 0;
+    const WINDOW_INTERVAL = 10000;
+    const N = 60000/WINDOW_INTERVAL;
+    var deltas = edit_times.map(t => now.getTime() - t.getTime());
+    for (var i = 0; i < N; i++) {
+        windows[i] = deltas.filter(d =>
+                (d < (i+1)*WINDOW_INTERVAL)
+                && (d > i*WINDOW_INTERVAL)
+            ).length;
+        smoothed += windows[i] * (N-i) * N;
+        denom += (N-i);
+    }
+    smoothed /= denom;
+    update_epm(Math.round(smoothed), svg_area);
+}
 
 function update_epm(epm, svg_area) {
     if (!epm_text) {
