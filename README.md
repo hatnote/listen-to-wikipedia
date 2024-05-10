@@ -1,6 +1,7 @@
 # Listen to Wikipedia
 
 Real-time visualization and sonification of Wikipedia activity.
+Hello everyone!
 
 ## About
 
