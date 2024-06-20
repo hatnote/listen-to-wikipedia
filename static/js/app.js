@@ -274,7 +274,7 @@ function play_random_swell() {
 
 function newuser_action(data, lid, svg_area) {
     play_random_swell();
-    var messages = ['Welcome to ' + data.user + ', Wikipedia\'s newest user!',
+    var messages = ['Welcome ' + data.user + ', Wikipedia\'s newest user!',
                     'Wikipedia has a new user, ' + data.user + '! Welcome!',
                     'Welcome, ' + data.user + ' has joined Wikipedia!'];
     var message = Math.round(Math.random() * (messages.length - 1));
