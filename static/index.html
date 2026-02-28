@@ -138,7 +138,7 @@
 								var name = lang_defs[code][0];
 								var port = lang_defs[code][1];
 								if (use_new_backend) {
-										result[code] = [name, 'wss://wikimon.hatnote.com/' + code + '/'];
+								result[code] = [name, 'wss://wikimon.hatnote.com/v2/' + code + '/'];
 								} else {
 										result[code] = [name, 'ws://wikimon.hatnote.com:' + port];
 								}
