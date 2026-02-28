@@ -80,54 +80,74 @@
         sound_totals = 51,
         total_edits = 0;
 
-    /* Languages
-       ========= */
+		/* Languages
+			 ========= */
 
-    var langs = {
-        'en': ['English', 'ws://wikimon.hatnote.com:9000'],
-        'de': ['German', 'ws://wikimon.hatnote.com:9010'],
-        'ru': ['Russian', 'ws://wikimon.hatnote.com:9020'],
-        'uk': ['Ukrainian', 'ws://wikimon.hatnote.com:9310'],
-        'ja': ['Japanese', 'ws://wikimon.hatnote.com:9030'],
-        'es': ['Spanish', 'ws://wikimon.hatnote.com:9040'],
-        'fr': ['French', 'ws://wikimon.hatnote.com:9050'],
-        'nl': ['Dutch', 'ws://wikimon.hatnote.com:9060'],
-        'it': ['Italian', 'ws://wikimon.hatnote.com:9070'],
-        'sv': ['Swedish', 'ws://wikimon.hatnote.com:9080'],
-        'ar': ['Arabic', 'ws://wikimon.hatnote.com:9090'],
-        'fa': ['Farsi', 'ws://wikimon.hatnote.com:9210'],
-        'he': ['Hebrew' , 'ws://wikimon.hatnote.com:9230'],
-        'id': ['Indonesian', 'ws://wikimon.hatnote.com:9100'],
-        'zh': ['Chinese', 'ws://wikimon.hatnote.com:9240'],
-        'as': ['Assamese', 'ws://wikimon.hatnote.com:9150'],
-        'hi': ['Hindi', 'ws://wikimon.hatnote.com:9140'],
-        'bn': ['Bengali', 'ws://wikimon.hatnote.com:9160'],
-        'pa': ['Punjabi', 'ws://wikimon.hatnote.com:9120'],
-        'te': ['Telugu', 'ws://wikimon.hatnote.com:9165'],
-        'ta': ['Tamil', 'ws://wikimon.hatnote.com:9110'],
-        'ml': ['Malayalam', 'ws://wikimon.hatnote.com:9250'],
-        'mr': ['Western Mari', 'ws://wikimon.hatnote.com:9130'],
-        'kn': ['Kannada', 'ws://wikimon.hatnote.com:9170'],
-        'or': ['Oriya', 'ws://wikimon.hatnote.com:9180'],
-        'sa': ['Sanskrit', 'ws://wikimon.hatnote.com:9190'],
-        'gu': ['Gujarati' , 'ws://wikimon.hatnote.com:9200'],
-        'pl': ['Polish' , 'ws://wikimon.hatnote.com:9260'],
-        'mk': ['Macedonian' , 'ws://wikimon.hatnote.com:9270'],
-        'be': ['Belarusian' , 'ws://wikimon.hatnote.com:9280'],
-        'sr': ['Serbian' , 'ws://wikimon.hatnote.com:9290'],
-        'bg': ['Bulgarian' , 'ws://wikimon.hatnote.com:9300'],
-        'hu': ['Hungarian', 'ws://wikimon.hatnote.com:9320'],
-        'fi': ['Finnish', 'ws://wikimon.hatnote.com:9330'],
-        'no': ['Norwegian', 'ws://wikimon.hatnote.com:9340'],
-        'el': ['Greek', 'ws://wikimon.hatnote.com:9350'],
-        'eo': ['Esperanto', 'ws://wikimon.hatnote.com:9360'],
-	'pt': ['Portuguese', 'ws://wikimon.hatnote.com:9370'],
-	'et': ['Estonian', 'ws://wikimon.hatnote.com:9380'],
-	'ur': ['Urdu', 'ws://wikimon.hatnote.com:9390'],
-	'ro': ['Romanian', 'ws://wikimon.hatnote.com:9400'],
-	'hy': ['Armenian', 'ws://wikimon.hatnote.com:9410'],
-        'wikidata': ['Wikidata' , 'ws://wikimon.hatnote.com:9220']
-    }
+		var lang_defs = {
+				'en':       ['English',     9000],
+				'de':       ['German',      9010],
+				'ru':       ['Russian',     9020],
+				'uk':       ['Ukrainian',   9310],
+				'ja':       ['Japanese',    9030],
+				'es':       ['Spanish',     9040],
+				'fr':       ['French',      9050],
+				'nl':       ['Dutch',       9060],
+				'it':       ['Italian',     9070],
+				'sv':       ['Swedish',     9080],
+				'ar':       ['Arabic',      9090],
+				'fa':       ['Farsi',       9210],
+				'he':       ['Hebrew',      9230],
+				'id':       ['Indonesian',  9100],
+				'zh':       ['Chinese',     9240],
+				'as':       ['Assamese',    9150],
+				'hi':       ['Hindi',       9140],
+				'bn':       ['Bengali',     9160],
+				'pa':       ['Punjabi',     9120],
+				'te':       ['Telugu',      9165],
+				'ta':       ['Tamil',       9110],
+				'ml':       ['Malayalam',   9250],
+				'mr':       ['Western Mari', 9130],
+				'kn':       ['Kannada',     9170],
+				'or':       ['Oriya',       9180],
+				'sa':       ['Sanskrit',    9190],
+				'gu':       ['Gujarati',    9200],
+				'pl':       ['Polish',      9260],
+				'mk':       ['Macedonian',  9270],
+				'be':       ['Belarusian',  9280],
+				'sr':       ['Serbian',     9290],
+				'bg':       ['Bulgarian',   9300],
+				'hu':       ['Hungarian',   9320],
+				'fi':       ['Finnish',     9330],
+				'no':       ['Norwegian',   9340],
+				'el':       ['Greek',       9350],
+				'eo':       ['Esperanto',   9360],
+				'pt':       ['Portuguese',  9370],
+				'et':       ['Estonian',    9380],
+				'ur':       ['Urdu',        9390],
+				'ro':       ['Romanian',    9400],
+				'hy':       ['Armenian',    9410],
+				'wikidata': ['Wikidata',    9220]
+		};
+
+		var use_new_backend = (location.protocol === 'https:');
+
+		function build_langs() {
+				var result = {};
+				for (var code in lang_defs) {
+						if (lang_defs.hasOwnProperty(code)) {
+								var name = lang_defs[code][0];
+								var port = lang_defs[code][1];
+								if (use_new_backend) {
+										result[code] = [name, 'wss://wikimon.hatnote.com/' + code + '/'];
+								} else {
+										result[code] = [name, 'ws://wikimon.hatnote.com:' + port];
+								}
+						}
+				}
+				return result;
+		}
+
+		var langs = build_langs();
 
     /*
        ============== */
@@ -207,6 +227,15 @@
         $('#hide_rc_box').click(
             function() {$("#rc-log").toggle();}
         );
+
+				$('#use_new_backend').prop('checked', use_new_backend);
+				$('#use_new_backend').click(function() {
+						if ($(this).is(':checked')) {
+								window.location.protocol = 'https:';
+						} else {
+								window.location.protocol = 'http:';
+						}
+				});
 
         $('#about-link').click(function(){
             // because we use window.location to set languages.
@@ -352,6 +381,8 @@
         <label for="hide_rc_box">Hide recent changes console</label></p>
         <p><input type="checkbox" name="background_mode" id="background_mode">
         <label for="background_mode">Hide graphics for background listening</label></p>
+				<p><input type="checkbox" name="use_new_backend" id="use_new_backend">
+				<label for="use_new_backend">Use new backend (HTTPS)</label></p>
         <h3>Languages</h3>
         <div id='lang-boxes'> </div>
         <div class='clear'><br/></div>
