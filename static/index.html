@@ -177,15 +177,6 @@
 
     $(function(){
 
-        // Chrome 66 Autoplay Policy Compliance
-        if (getChromeVersion() >= 66){
-            if (Howler.ctx.state == 'suspended') {
-                $('.about-link').prepend('<a class="unmute" href="#">enable sound?</a>');
-            }
-            $(document).click(function() { 
-                Howler.ctx.resume().then($('.unmute').fadeOut());
-            });
-        }
 
         $('body').css('background-color', body_background_color)
         $('body').css('color', body_text_color)
@@ -196,7 +187,7 @@
                          ';} .bot {fill:' + bot_color +
                          ';} .anon {fill:' + anon_color +
                          ';} .bot </style>');
-        $('body').append('<div id="loading"><p>Loading sound files ...</p></div>')
+        $('body').append('<div id="loading"><p>Connecting ...</p></div>')
 
         var svg = d3.select("#area").append("svg")
             .attr({width: width, height: height})
@@ -251,8 +242,13 @@
                 all_loaded = true
                 $('#loading').remove()
                 console.log('Loading complete')
-            } else {
-                // console.log('Loading : ' + loaded_sounds + ' files out of ' + sound_totals)
+                if (Howler.ctx && Howler.ctx.state === 'suspended') {
+                    $('#volumeWrapper').before('<span id="click-to-listen">\u266b click to enable sound</span>');
+                    $(document).one('click', function() {
+                        Howler.ctx.resume();
+                        $('#click-to-listen').fadeOut(function() { $(this).remove(); });
+                    });
+                }
             }
         }
 

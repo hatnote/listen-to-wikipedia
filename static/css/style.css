@@ -155,8 +155,16 @@ label {
     color: #fff;
     background-color: rgba(189, 195, 199, 0.6);
 }
-.unmute {
-    color: #cc4732;
+#click-to-listen {
+    color: #cc4731;
+    cursor: pointer;
+    margin-left: 1em;
+    font-weight: normal;
+    animation: pulse-listen 2s ease-in-out infinite;
+}
+@keyframes pulse-listen {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
 }
 
 #loading p, {
