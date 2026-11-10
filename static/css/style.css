@@ -202,3 +202,31 @@ label {
 #volumeSlider div {
   display: inline-block;
 }
+
+/* book promo banner (through 2026-12-10) */
+#book-banner {
+    position: relative;
+    padding: .6em 3em .6em 1em;
+    background: #eef4fa;
+    border-bottom: 1px solid #c9d9ea;
+    color: #1c2733;
+    font-size: .9em;
+    line-height: 1.5em;
+    text-align: center;
+}
+#book-banner-close {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: .5em;
+    border: 0;
+    padding: 0 .5em;
+    background: none;
+    color: #306596;
+    font-size: 1.5em;
+    line-height: 1;
+    cursor: pointer;
+}
+#book-banner-close:hover {
+    color: #cc4731;
+}

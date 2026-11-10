@@ -12,6 +12,7 @@
     <script src="js/d3.min.js"></script>
     <script src="js/reconnecting-websocket.min.js" type="text/javascript"></script>
     <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/banner.js" type="text/javascript"></script>
 
     <script src="js/jquery.nouislider.min.js"></script>
     <script src="js/howler.min.js"></script>
@@ -347,6 +348,10 @@
 </head>
 <body>
     <div id='header'>
+      <div id="book-banner" style="display:none">
+        <span class="book-banner-text">If you love listening to Wikipedia, we think you'll love reading about it: Richard Cooke's new book, <a href="https://en.wikipedia.org/wiki/The_Last_Best_Place_on_the_Internet" target="_blank" rel="noopener"><i>The Last Best Place on the Internet</i></a>, is out now at <span id="book-banner-sellers"><a href="https://www.amazon.com/dp/0393881881" target="_blank" rel="noopener">Amazon</a></span>.</span>
+        <button type="button" id="book-banner-close" aria-label="Dismiss this banner" title="Dismiss">&times;</button>
+      </div>
       <span class="about-link">
         <span id="volumeWrapper" class="interface">
           <span id="volumeSlider" class="noUiSlider"></span>
